@@ -15,13 +15,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -98,9 +102,11 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		Cadse refCadse;
 		Type[] typesRef;
 		int[] types;
+		private int i;
 
-		public Cadse(int extendsCadse, int... types) {
+		public Cadse(int i, int extendsCadse, int... types) {
 			super();
+			this.i = i;
 			this.extendsCadse = extendsCadse;
 			this.types = types;
 		}
@@ -112,44 +118,89 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		public String projectName;
 	}
 
+	
+	static public class TestParameter extends AbstractList<Object[]> {
+		int l = 3;
+		
+		@Override
+		public Iterator<Object[]> iterator() {
+			
+			return new Iterator<Object[]>() {
+				int current = 0;
+				
+				@Override
+				public boolean hasNext() {
+					return current < l;
+				}
+
+				@Override
+				public Object[] next() {
+					return get(current++);
+				}
+
+				@Override
+				public void remove() {
+				}
+			};
+		}
+
+		@Override
+		public int size() {
+			return l;
+		}
+
+		@Override
+		public Object[] get(int index) {
+			switch (index) {
+		case 0:
+			return new Object[] { 	new Type[] {
+					new Type(-1, new Attribute[] { 
+							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
+					new Type(0, new Attribute[] {}, null
+					)},
+				new Cadse[] { 
+					new Cadse(index, -1, 0, 1)
+				},
+				1
+			};
+			case 1:
+				return new Object[] {  new Type[] {
+					new Type(-1, new Attribute[] { 
+							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
+					new Type(0, new Attribute[] {}, null
+					)},
+				new Cadse[] { 
+					new Cadse(index,-1, 0), 
+					new Cadse(index, 0, 1)
+				},
+				1
+			};
+			case 2:
+				return new Object[] 
+	    			{ new Type[] {
+	    					new Type(-1, new Attribute[] { 
+	    							new Attribute(CadseGCST.STRING, true, true, true, true),
+									new Attribute(CadseGCST.STRING, false, false, true, true) }, null),
+							new Type(0, new Attribute[] {}, null
+							)},
+	    				new Cadse[] { 
+	    					new Cadse(index, -1, 0), 
+	    					new Cadse(index, 0,  1)
+	    				},
+	    				1
+	    					
+	   			};
+
+			default:
+				break;
+			}
+			return null;
+		}
+		
+	}
 	@Parameters
     public static Collection<Object[]> data() {
-    	return Arrays.asList(new Object[][] {
-    			{ 	new Type[] {
-    					new Type(-1, new Attribute[] { 
-    							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
-						new Type(0, new Attribute[] {}, null
-						)},
-    				new Cadse[] { 
-    					new Cadse(-1, 0, 1)
-    				},
-    				1
-    			},
-    			{  new Type[] {
-    					new Type(-1, new Attribute[] { 
-    							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
-						new Type(0, new Attribute[] {}, null
-						)},
-    				new Cadse[] { 
-    					new Cadse(-1, 0), 
-    					new Cadse(0, 1)
-    				},
-    				1
-    			},
-    			{ new Type[] {
-    					new Type(-1, new Attribute[] { 
-    							new Attribute(CadseGCST.STRING, true, true, true, true),
-								new Attribute(CadseGCST.STRING, false, false, true, true) }, null),
-						new Type(0, new Attribute[] {}, null
-						)},
-    				new Cadse[] { 
-    					new Cadse(-1, 0), 
-    					new Cadse(0,  1)
-    				},
-    				1
-    					
-   			}
-    	});
+    	return new TestParameter();
     }
 
 	private Type[] types;
@@ -174,23 +225,30 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 	 * @throws Exception
 	 *             the exception
 	 */
-	@Test
-	public void test_preparation() throws Exception {
-
+	@BeforeClass
+	static public void init() {
 		// Starts CADSEg
 		selectCadses(GTCadseRTConstants.CADSEG_MODEL);
 
 		// Closes unless views
 		welcomeView.close();
 		workspaceView.show();
-
+	}
+	
+	@Test
+	public void main() throws Exception {
 		for (int i = 0; i < cadses.length; i++) {
 			Cadse c = cadses[i];
-			c.name = "CADSE_UI_" + i;
+			c.name = "CADSE_UI_" +c.i +"_"+ i;
 			c.projectName = "Model.Workspace." + c.name;
-			createCadseDefinition(c.name, "model." + c.name);
 			if (c.extendsCadse != -1)
 				c.refCadse = cadses[c.extendsCadse];
+			
+			if (c.refCadse == null)
+				createCadseDefinition(c.name, "model." + c.name);
+			else
+				createCadseDefinition(c.name, "model." + c.name, 
+						new KeyValue(CadseGCST.CADSE_lt_EXTENDS, c.refCadse.name));
 			// TODO extends CAdse
 
 			c.cadse_model = new GTTreePath(c.name);
@@ -201,8 +259,9 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			c.mapping_model = c.cadse_model
 					.concat(CadseDefinitionManager.MAPPING);
 
+			c.typesRef = new Type[c.types.length];
 			for (int j = 0; j < c.types.length; j++) {
-				c.typesRef[j] = types[c.types[i]];
+				c.typesRef[j] = types[c.types[j]];
 				c.typesRef[j].cadse = c;
 			}
 		}
@@ -212,14 +271,14 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			t.name = "Type_" + j;
 			if (t.extendsType != -1)
 				t.supertype = types[t.extendsType];
-			t.superCountAttr = t.supertype.superCountAttr
+			t.superCountAttr = t.supertype == null ? 0 : t.supertype.superCountAttr
 					+ t.supertype.attributes.length;
 			createType(t);
 		}
+		 test_item_manager();
 	}
 
-	@Test
-	public void test_item_creation() throws Exception {
+	public void test_item_manager() throws Exception {
 
 		Cadse c = finalType.cadse;
 		GTCadseHelperMethods.addImportOnManifest(c.projectName,
@@ -238,6 +297,23 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		manager.setCadsePackageName( "model." + c.name);
 		manager.setClassName(finalType.name);
 		manager.setExtendsPart("extends "+finalType.supertype.name+"Manager");
+		manager.addImports("fr.imag.adele.cadse.core.CadseGCST",
+	"fr.imag.adele.cadse.core.InitAction",
+	"fr.imag.adele.cadse.core.Item",
+	"fr.imag.adele.cadse.core.ItemType",
+	"fr.imag.adele.cadse.core.LinkType",
+	"fr.imag.adele.cadse.core.ui.EPosLabel",
+	"fr.imag.adele.cadse.core.ui.IPage",
+	"fr.imag.adele.cadse.core.ui.RuningInteractionController",
+	"fr.imag.adele.cadse.core.ui.UIField",
+	"fr.imag.adele.cadse.core.util.CreatedObjectManager",
+	"model.CADSE_UI.CADSE_UICST",
+	"fr.imag.adele.cadse.core.impl.ui.PageImpl",
+	"fr.imag.adele.cadse.core.impl.ui.UIFieldImpl",
+	"fr.imag.adele.cadse.core.impl.ui.ic.IC_Descriptor",
+	"fr.imag.adele.cadse.core.impl.ui.mc.MC_Descriptor",
+	"fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform",
+	"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI");
 		
 		GTTextEditor editor = new GTTextEditor(finalType.name+"Manager.java");
 		editor.show();
@@ -291,23 +367,6 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 
 			createBasicAttribute(it_A_path, attr.typeAttr, attr.name, kv);
 		}
-	}
-
-	private String getText(URL url) throws IOException {
-		// Read all of the text returned by the HTTP server
-		BufferedReader in = new BufferedReader(new InputStreamReader(url
-				.openStream()));
-
-		StringBuilder text = new StringBuilder();
-		String str;
-		while ((str = in.readLine()) != null) {
-			text.append(str);
-			text.append("\n");
-		}
-
-		in.close();
-		return text.toString();
-
 	}
 
 }
