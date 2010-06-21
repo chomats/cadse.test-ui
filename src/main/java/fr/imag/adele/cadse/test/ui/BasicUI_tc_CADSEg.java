@@ -1,12 +1,13 @@
 package fr.imag.adele.cadse.test.ui;
 
-import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.propertiesView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.workspaceView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.notAbstractKv;
-import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.*;
+import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.rootKv;
+import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.sicpKv;
+import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.simpKv;
+import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createBasicAttribute;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createCadseDefinition;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createItemType;
-import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.*;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
@@ -14,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,8 +30,7 @@ import org.junit.runners.Parameterized.Parameters;
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
-import fr.imag.adele.cadse.test.basictests.testdriver.GTCollectionTestParameter;
-import fr.imag.adele.cadse.test.basictests.testdriver.GTTestParameter;
+import fr.imag.adele.cadse.test.generatorManager.GenerateManager;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
 import fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods;
 import fr.imag.adele.graphictests.cadse.test.GTCadseRTConstants;
