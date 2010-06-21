@@ -3,7 +3,7 @@
   <groupId>fr.imag.adele.cadse</groupId>
   <artifactId>fr.imag.adele.cadse.test.ui</artifactId>
   <packaging>bundle</packaging>
-  <name>fr.imag.adele.cadse.test.basictests</name>
+  <name>fr.imag.adele.cadse.test.ui</name>
   <version>2.3.0-SNAPSHOT</version>
   <parent>
   	<artifactId>fr.imag.adele.cadse.parent.osgi</artifactId>
@@ -24,28 +24,6 @@
                    </instructions>
                 </configuration>
             </plugin>
-            <plugin>
-				<groupId>org.codehaus.groovy.maven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<fileset>
-									<directory>${pom.basedir}/src/main/groovy</directory>
-									<includes>
-										<include>**/*.groovy</include>
-									</includes>
-								</fileset>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
         </plugins>
     </build>
     <dependencies>
@@ -77,6 +55,13 @@
     		<artifactId>groovy-1.7.2.jar</artifactId>
     		<version>1.7.2-20100427.1500.e35</version>
     		<type>pom</type>
+    		<scope>compile</scope>
+    	</dependency>
+    	<dependency>
+    		<groupId>fr.imag.adele.cadse</groupId>
+    		<artifactId>fr.imag.adele.cadse.test.generatorManager</artifactId>
+    		<version>2.3.0-SNAPSHOT</version>
+    		<type>bundle</type>
     		<scope>compile</scope>
     	</dependency>
     </dependencies>

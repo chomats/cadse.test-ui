@@ -3,10 +3,10 @@ package fr.imag.adele.cadse.test.ui;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.propertiesView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.workspaceView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.notAbstractKv;
-import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.rootKv;
+import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.*;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createCadseDefinition;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createItemType;
-import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createString;
+import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.*;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -47,53 +48,121 @@ import fr.imag.adele.graphictests.gtworkbench_part.GTTextEditor;
  * <li>cannot be undefined</li>
  * </ul>
  */
-//@RunWith(Parameterized.class)
+@RunWith(Parameterized.class)
 public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 	static public class Field {
 		String label;
 		ItemType type;
 		String className;
 	}
+
 	static public class Attribute {
+
+		public Attribute(ItemType typeAttr, boolean hidden, boolean override,
+				boolean sicpKv, boolean simpKv) {
+			super();
+			this.typeAttr = typeAttr;
+			this.hidden = hidden;
+			this.override = override;
+			this.sicpKv = sicpKv;
+			this.simpKv = simpKv;
+		}
+
 		String name;
-		ItemType type;
+		ItemType typeAttr;
+		boolean hidden;
+		boolean override;
+		boolean sicpKv;
+		boolean simpKv;
 	}
+
 	static public class Type {
+		Cadse cadse;
 		String name;
 		Attribute[] attributes;
 		Field[] field;
+		int extendsType = -1;
+		Type supertype = null;
+		int superCountAttr = 0;
+
+		public Type(int extendsType, Attribute[] attributes, Field[] field) {
+			super();
+			this.attributes = attributes;
+			this.field = field;
+			this.extendsType = extendsType;
+		}
 	}
+
 	static public class Cadse {
 		String name;
-		Cadse[] extendsCadse;
-		Type[] types;
+		int extendsCadse;
+		Cadse refCadse;
+		Type[] typesRef;
+		int[] types;
+
+		public Cadse(int extendsCadse, int... types) {
+			super();
+			this.extendsCadse = extendsCadse;
+			this.types = types;
+		}
+
+		GTTreePath cadse_model;
+		GTTreePath build_model;
+		GTTreePath data_model;
+		GTTreePath mapping_model;
+		public String projectName;
 	}
-	
-	
-	//@Parameters
+
+	@Parameters
     public static Collection<Object[]> data() {
-    	GTCollectionTestParameter tp = new GTCollectionTestParameter();
-    	
-    	tp.addParameters("countCadse", 1, 2);
-    	tp.addParameters("countT1Attr", 1, 3);
-    	tp.addParameters("countT1AttrHidden", 1, 2, 3);
-    	tp.addParameters("typesName", new String[]{ "T1" }, new String[]{ "T1", "T2" });
-    	
-    	return tp.getSequentialArray();
+    	return Arrays.asList(new Object[][] {
+    			{ 	new Type[] {
+    					new Type(-1, new Attribute[] { 
+    							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
+						new Type(0, new Attribute[] {}, null
+						)},
+    				new Cadse[] { 
+    					new Cadse(-1, 0, 1)
+    				},
+    				1
+    			},
+    			{  new Type[] {
+    					new Type(-1, new Attribute[] { 
+    							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
+						new Type(0, new Attribute[] {}, null
+						)},
+    				new Cadse[] { 
+    					new Cadse(-1, 0), 
+    					new Cadse(0, 1)
+    				},
+    				1
+    			},
+    			{ new Type[] {
+    					new Type(-1, new Attribute[] { 
+    							new Attribute(CadseGCST.STRING, true, true, true, true),
+								new Attribute(CadseGCST.STRING, false, false, true, true) }, null),
+						new Type(0, new Attribute[] {}, null
+						)},
+    				new Cadse[] { 
+    					new Cadse(-1, 0), 
+    					new Cadse(0,  1)
+    				},
+    				1
+    					
+   			}
+    	});
     }
 
+	private Type[] types;
+	private Cadse[] cadses;
+	private Type finalType;
 
-//	private GTTestParameter _test;
-
-   public BasicUI_tc_CADSEg() {
-   }
-	
-	
-	protected final String cadse_name = "CADSE_UI";
-	protected GTTreePath cadse_model = new GTTreePath(cadse_name);
-	protected GTTreePath build_model = cadse_model.concat(CadseDefinitionManager.BUILD_MODEL);
-	protected GTTreePath data_model = cadse_model.concat(CadseDefinitionManager.DATA_MODEL);
-	protected GTTreePath mapping_model = cadse_model.concat(CadseDefinitionManager.MAPPING);
+	public BasicUI_tc_CADSEg(Type[] types, Cadse[] cadses, int refType) {
+		super();
+		this.cadses = cadses;
+		this.types = types;
+		this.finalType = types[refType];
+	}
 
 	/**
 	 * Makes a few things before the test starts.
@@ -116,24 +185,47 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		welcomeView.close();
 		workspaceView.show();
 
-		// Creates a new CADSE
-		createCadseDefinition(cadse_name, "model." + cadse_name);
+		for (int i = 0; i < cadses.length; i++) {
+			Cadse c = cadses[i];
+			c.name = "CADSE_UI_" + i;
+			c.projectName = "Model.Workspace." + c.name;
+			createCadseDefinition(c.name, "model." + c.name);
+			if (c.extendsCadse != -1)
+				c.refCadse = cadses[c.extendsCadse];
+			// TODO extends CAdse
+
+			c.cadse_model = new GTTreePath(c.name);
+			c.build_model = c.cadse_model
+					.concat(CadseDefinitionManager.BUILD_MODEL);
+			c.data_model = c.cadse_model
+					.concat(CadseDefinitionManager.DATA_MODEL);
+			c.mapping_model = c.cadse_model
+					.concat(CadseDefinitionManager.MAPPING);
+
+			for (int j = 0; j < c.types.length; j++) {
+				c.typesRef[j] = types[c.types[i]];
+				c.typesRef[j].cadse = c;
+			}
+		}
+
+		for (int j = 0; j < types.length; j++) {
+			Type t = types[j];
+			t.name = "Type_" + j;
+			if (t.extendsType != -1)
+				t.supertype = types[t.extendsType];
+			t.superCountAttr = t.supertype.superCountAttr
+					+ t.supertype.attributes.length;
+			createType(t);
+		}
 	}
 
 	@Test
 	public void test_item_creation() throws Exception {
-		KeyValue superItA = new KeyValue(
-				CadseGCST.ITEM_TYPE_lt_SUPER_TYPE, data_model.concat("it_A"));
-		
-		// Creates item type with default instance name
-		createItemType(data_model, "it_A", notAbstractKv, rootKv);
-		workspaceView.selectNode(data_model.concat("it_A"));
-		createString(data_model.concat("it_A"), "attr");
-		
-		createItemType(data_model, "it_B", notAbstractKv, rootKv, superItA);
-		
-		GTCadseHelperMethods.addImportOnManifest("Model.Workspace.CADSE_UI", 
-				"fr.imag.adele.cadse.core.impl.ui", "fr.imag.adele.cadse.core.ui", 
+
+		Cadse c = finalType.cadse;
+		GTCadseHelperMethods.addImportOnManifest(c.projectName,
+				"fr.imag.adele.cadse.core.impl.ui",
+				"fr.imag.adele.cadse.core.ui",
 				"fr.imag.adele.cadse.cadseg.pages.ic",
 				"fr.imag.adele.cadse.cadseg.pages.mc",
 				"fr.imag.adele.cadse.core.impl.ui.mc",
@@ -141,37 +233,82 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.mc",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui");
+
+		workspaceView.findTree().doubleClick(c.data_model.concat(finalType.name));
+		GenerateManager manager = new GenerateManager();
+		manager.setCadsePackageName( "model." + c.name);
+		manager.setClassName(finalType.name);
+		manager.setExtendsPart("extends "+finalType.supertype.name+"Manager");
 		
-		workspaceView.findTree().doubleClick(data_model.concat("it_B"));
-		
-		GTTextEditor editor = new GTTextEditor("It_BManager.java");
+		GTTextEditor editor = new GTTextEditor(finalType.name+"Manager.java");
 		editor.show();
 		editor.selectAll();
-		editor.typeText(getText(getClass().getResource("itB_manager_java.txt")));
+		editor.typeText(manager.classPart());
 		editor.save();
 		
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("Model.Workspace.CADSE_UI");
-		assertNotNull(project);
-		IJavaProject jp = JavaCore.create(project);
-		assertNotNull(jp);
-		GTCadseHelperMethods.checkError(jp, null);
 		
+		checkError();
+		
+
+	}
+
+	private void checkError() throws Exception {
+		for (int i = 0; i < cadses.length; i++) {
+			Cadse cadse = cadses[i];
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+					cadse.projectName);
+			assertNotNull(project);
+			IJavaProject jp = JavaCore.create(project);
+			assertNotNull(jp);
+			GTCadseHelperMethods.checkError(jp, null);
+		}
+	}
+
+	private void createType(Type t) {
+		final GTTreePath it_A_path = t.cadse.data_model.concat(t.name);
+
+		KeyValue superItA = null;
+		if (t.supertype != null)
+			superItA = new KeyValue(CadseGCST.ITEM_TYPE_lt_SUPER_TYPE,
+					t.supertype.cadse.data_model.concat(t.supertype.name));
+
+		// Creates item type with default instance name
+		if (superItA == null)
+			createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv);
+		else
+			createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv,
+					superItA);
+		workspaceView.selectNode(it_A_path);
+		for (int i = 0; i < t.attributes.length; i++) {
+			Attribute attr = t.attributes[i];
+			attr.name = "attr" + i;
+			int l = (attr.sicpKv ? 1 : 0) + (attr.simpKv ? 1 : 0);
+			KeyValue[] kv = new KeyValue[l];
+			int j = 0;
+			if (attr.sicpKv)
+				kv[j++] = sicpKv;
+			if (attr.simpKv)
+				kv[j++] = simpKv;
+
+			createBasicAttribute(it_A_path, attr.typeAttr, attr.name, kv);
+		}
 	}
 
 	private String getText(URL url) throws IOException {
-           // Read all of the text returned by the HTTP server
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+		// Read all of the text returned by the HTTP server
+		BufferedReader in = new BufferedReader(new InputStreamReader(url
+				.openStream()));
 
-            StringBuilder text = new StringBuilder();
-            String str ;
-            while ((str = in.readLine()) != null) {
-               text.append(str);
-               text.append("\n");
-            }
+		StringBuilder text = new StringBuilder();
+		String str;
+		while ((str = in.readLine()) != null) {
+			text.append(str);
+			text.append("\n");
+		}
 
-            in.close();
-            return text.toString();
-       
+		in.close();
+		return text.toString();
+
 	}
-	
+
 }
