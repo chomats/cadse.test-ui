@@ -2,7 +2,7 @@ package fr.imag.adele.cadse.test.ui;
 
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.propertiesView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.workspaceView;
-import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createCadseDefinition;
+import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.*;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
@@ -66,7 +66,7 @@ public class BasicUI_tc_execution extends BasicUI_abstract_tc {
 			Cadse c = cadses[i];
 			selCadse[i] = "Cadse Model.Workspace." + c.name;
 		}
-		selectCadses(selCadse);
+		selectCadsesFromWorkspaceView(selCadse);
 		
 		for (int i = 0; i < types.length ; i++) {
 			Type t = types[i];
