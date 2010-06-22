@@ -4,14 +4,14 @@ import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.graphictests.cadse.test.GTCadseTestCase;
 import fr.imag.adele.graphictests.gttree.GTTreePath;
 
-abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
+abstract public class HiddenPageUI_abstract_tc extends GTCadseTestCase {
 
 	protected Type[] types;
 	protected Cadse[] cadses;
 	protected Type finalType;
 	protected GroupUI[] groupUI;
 
-	protected BasicUI_abstract_tc(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
+	protected HiddenPageUI_abstract_tc(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
 		super();
 		this.cadses = cadses;
 		this.types = types;

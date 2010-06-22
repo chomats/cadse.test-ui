@@ -8,9 +8,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses(value = { BasicUI_tc_CADSEg.class })
-public class BasicUI_ts_CADSEg {
+@SuiteClasses(value = { HiddenPageUI_tc_CADSEg.class })
+public class HiddenPageUI_ts_CADSEg {
 	public static Test suite() {
-		return new JUnit4TestAdapter(BasicUI_ts_CADSEg.class);
+		return new JUnit4TestAdapter(HiddenPageUI_ts_CADSEg.class);
 	}
 }

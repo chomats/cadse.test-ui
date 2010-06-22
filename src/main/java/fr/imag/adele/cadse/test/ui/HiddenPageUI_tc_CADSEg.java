@@ -47,9 +47,9 @@ import fr.imag.adele.graphictests.gtworkbench_part.GTTextEditor;
  * </ul>
  */
 @RunWith(Parameterized.class)
-public class BasicUI_tc_CADSEg extends BasicUI_abstract_tc {
+public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 	
-	public BasicUI_tc_CADSEg(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
+	public HiddenPageUI_tc_CADSEg(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
 		super(types, cadses, groupUi, refType);
 	}
 

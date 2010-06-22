@@ -8,9 +8,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses(value = { BasicUI_tc_execution.class })
-public class BasicUI_ts_execution {
+@SuiteClasses(value = { HiddenPageUI_tc_execution.class })
+public class HiddenPageUI_ts_execution {
 	public static Test suite() {
-		return new JUnit4TestAdapter(BasicUI_ts_execution.class);
+		return new JUnit4TestAdapter(HiddenPageUI_ts_execution.class);
 	}
 }
