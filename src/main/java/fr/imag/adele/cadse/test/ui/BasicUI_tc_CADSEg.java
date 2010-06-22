@@ -27,7 +27,7 @@ import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.test.generatorManager.GenerateFieldPart;
 import fr.imag.adele.cadse.test.generatorManager.GenerateGroupPart;
-import fr.imag.adele.cadse.test.generatorManager.GenerateHiddenPage;
+import fr.imag.adele.cadse.test.generatorManager.GeneratePage;
 import fr.imag.adele.cadse.test.generatorManager.GenerateInnerClass;
 import fr.imag.adele.cadse.test.generatorManager.GenerateManager;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
@@ -144,8 +144,8 @@ public class BasicUI_tc_CADSEg extends BasicUI_abstract_tc {
 	"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI");
 		
 		
-		GenerateHiddenPage ghp = new GenerateHiddenPage();
-		ghp.setCltHiddenAttributes("hiddenPage");
+		GeneratePage ghp = new GeneratePage();
+		ghp.setPageVar("hiddenPage");
 		ghp.setTypeAttached(finalType.getCst());
 		ghp.addImports(finalType.cadse.getQCst());
 		

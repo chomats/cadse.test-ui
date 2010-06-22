@@ -9,7 +9,7 @@ import java.util.Iterator;
 import fr.imag.adele.cadse.core.CadseGCST;
 
 public class TestParameter extends AbstractList<Object[]> {
-	int l = 5;
+	int l = 11;
 	
 	@Override
 	public Iterator<Object[]> iterator() {
@@ -50,6 +50,10 @@ public class TestParameter extends AbstractList<Object[]> {
 		Cadse c1;
 		Type t0;
 		Type t1;
+		Type t2;
+		GroupNameUI g0;
+		Attribute a0;
+		
 		switch (index) {
 	case 0:
 		return e( 	t(
@@ -109,8 +113,6 @@ public class TestParameter extends AbstractList<Object[]> {
     					
    			);
 		case 4:
-			GroupNameUI g0;
-			Attribute a0;
 			return e( 	t(
 					t0= new Type(null, a( 
 							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
@@ -125,6 +127,106 @@ public class TestParameter extends AbstractList<Object[]> {
 									"fr.imag.adele.cadse.core.CadseGCST"))
 				),
 				t1
+			);
+		case 5:
+			Attribute a1;
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (
+					g0 = new GroupNameUI(),
+					new GroupUI(g0, t0, "name2", 1,  true, 
+							a0, a1, new AttributeRef("CadseGCST.ITEM_at_NAME_", 
+									"fr.imag.adele.cadse.core.CadseGCST"))
+				),
+				t2
+			);
+		case 6:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (
+					g0 = new GroupNameUI(),
+					new GroupUI(g0, t0, "name2", 1,  true, 
+							a0, a1, new AttributeRef("CadseGCST.ITEM_at_NAME_", 
+									"fr.imag.adele.cadse.core.CadseGCST"))
+				),
+				t2
+			);
+		case 7:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (
+					g0 = new GroupNameUI(),
+					new GroupUI(g0, t0, "name2", 1,  true, 
+							a0, a1, new AttributeRef("CadseGCST.ITEM_at_NAME_", 
+									"fr.imag.adele.cadse.core.CadseGCST"))
+				),
+				t2
+			);
+		case 8:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (),
+				t2
+			);
+		case 9:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (),
+				t2
+			);
+		case 10:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+					t2= new Type(t1, a(), f())),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2)
+				),
+				g (),
+				t2
 			);
 		default:
 			break;
