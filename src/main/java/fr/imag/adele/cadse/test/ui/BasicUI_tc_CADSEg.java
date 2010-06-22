@@ -11,9 +11,7 @@ import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createI
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
-import java.util.AbstractList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -27,7 +25,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.core.CadseGCST;
-import fr.imag.adele.cadse.core.ItemType;
 import fr.imag.adele.cadse.test.generatorManager.GenerateFieldPart;
 import fr.imag.adele.cadse.test.generatorManager.GenerateHiddenPage;
 import fr.imag.adele.cadse.test.generatorManager.GenerateInnerClass;
@@ -50,168 +47,7 @@ import fr.imag.adele.graphictests.gtworkbench_part.GTTextEditor;
  */
 @RunWith(Parameterized.class)
 public class BasicUI_tc_CADSEg extends GTCadseTestCase {
-	static public class Field {
-		String label;
-		ItemType type;
-		String className;
-	}
-
-	static public class Attribute {
-
-		public Attribute(ItemType typeAttr, boolean hidden, boolean override,
-				boolean sicpKv, boolean simpKv) {
-			super();
-			this.typeAttr = typeAttr;
-			this.hidden = hidden;
-			this.override = override;
-			this.sicpKv = sicpKv;
-			this.simpKv = simpKv;
-		}
-
-		Type owner;
-		String name;
-		ItemType typeAttr;
-		boolean hidden;
-		boolean override;
-		boolean sicpKv;
-		boolean simpKv;
-		
-		public String getCst() {
-			return owner.getCst()+"_at_"+name.toUpperCase()+"_";
-		}
-	}
-
-	static public class Type {
-		Cadse cadse;
-		String name;
-		Attribute[] attributes;
-		Field[] field;
-		int extendsType = -1;
-		Type supertype = null;
-		int superCountAttr = 0;
-
-		public Type(int extendsType, Attribute[] attributes, Field[] field) {
-			super();
-			this.attributes = attributes;
-			this.field = field;
-			this.extendsType = extendsType;
-		}
-
-		public String getCst() {
-			return cadse.getCst()+"."+name.toUpperCase();
-		}
-	}
-
-	static public class Cadse {
-		String name;
-		String packageName;
-		int extendsCadse;
-		Cadse refCadse;
-		Type[] typesRef;
-		int[] types;
-		private int i;
-
-		public Cadse(int i, int extendsCadse, int... types) {
-			super();
-			this.i = i;
-			this.extendsCadse = extendsCadse;
-			this.types = types;
-		}
-
-		public String getQCst() {
-			return packageName+"."+getCst();
-		}
-		public String getCst() {
-			return name+"CST";
-		}
-
-		GTTreePath cadse_model;
-		GTTreePath build_model;
-		GTTreePath data_model;
-		GTTreePath mapping_model;
-		public String projectName;
-	}
-
 	
-	static public class TestParameter extends AbstractList<Object[]> {
-		int l = 3;
-		
-		@Override
-		public Iterator<Object[]> iterator() {
-			
-			return new Iterator<Object[]>() {
-				int current = 0;
-				
-				@Override
-				public boolean hasNext() {
-					return current < l;
-				}
-
-				@Override
-				public Object[] next() {
-					return get(current++);
-				}
-
-				@Override
-				public void remove() {
-				}
-			};
-		}
-
-		@Override
-		public int size() {
-			return l;
-		}
-
-		@Override
-		public Object[] get(int index) {
-			switch (index) {
-		case 0:
-			return new Object[] { 	new Type[] {
-					new Type(-1, new Attribute[] { 
-							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
-					new Type(0, new Attribute[] {}, null
-					)},
-				new Cadse[] { 
-					new Cadse(index, -1, 0, 1)
-				},
-				1
-			};
-			case 1:
-				return new Object[] {  new Type[] {
-					new Type(-1, new Attribute[] { 
-							new Attribute(CadseGCST.STRING, true, true, true, true) }, null),
-					new Type(0, new Attribute[] {}, null
-					)},
-				new Cadse[] { 
-					new Cadse(index,-1, 0), 
-					new Cadse(index, 0, 1)
-				},
-				1
-			};
-			case 2:
-				return new Object[] 
-	    			{ new Type[] {
-	    					new Type(-1, new Attribute[] { 
-	    							new Attribute(CadseGCST.STRING, true, true, true, true),
-									new Attribute(CadseGCST.STRING, false, false, true, true) }, null),
-							new Type(0, new Attribute[] {}, null
-							)},
-	    				new Cadse[] { 
-	    					new Cadse(index, -1, 0), 
-	    					new Cadse(index, 0,  1)
-	    				},
-	    				1
-	    					
-	   			};
-
-			default:
-				break;
-			}
-			return null;
-		}
-		
-	}
 	@Parameters
     public static Collection<Object[]> data() {
     	return new TestParameter();
@@ -249,8 +85,7 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		workspaceView.show();
 	}
 	
-	@Test
-	public void main() throws Exception {
+	public void initParam() {
 		for (int i = 0; i < cadses.length; i++) {
 			Cadse c = cadses[i];
 			c.name = "CADSE_UI_" +c.i +"_"+ i;
@@ -259,12 +94,6 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 				c.refCadse = cadses[c.extendsCadse];
 			
 			c.packageName = "model." + c.name;
-			if (c.refCadse == null)
-				createCadseDefinition(c.name, c.packageName);
-			else
-				createCadseDefinition(c.name, c.packageName, 
-						new KeyValue(CadseGCST.CADSE_lt_EXTENDS, c.refCadse.name));
-
 			c.cadse_model = new GTTreePath(c.name);
 			c.build_model = c.cadse_model
 					.concat(CadseDefinitionManager.BUILD_MODEL);
@@ -287,6 +116,27 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 				t.supertype = types[t.extendsType];
 			t.superCountAttr = t.supertype == null ? 0 : t.supertype.superCountAttr
 					+ t.supertype.attributes.length;
+			for (int i = 0; i < t.attributes.length; i++) {
+				Attribute attr = t.attributes[i];
+				attr.owner = t;
+				attr.name = "attr" + t.superCountAttr+i;
+			}
+		}
+	}
+	
+	@Test
+	public void main() throws Exception {
+		for (int i = 0; i < cadses.length; i++) {
+			Cadse c = cadses[i];
+			if (c.refCadse == null)
+				createCadseDefinition(c.name, c.packageName);
+			else
+				createCadseDefinition(c.name, c.packageName, 
+						new KeyValue(CadseGCST.CADSE_lt_EXTENDS, c.refCadse.name));
+		}
+
+		for (int j = 0; j < types.length; j++) {
+			Type t = types[j];
 			createType(t);
 		}
 		test_item_manager();
@@ -410,8 +260,6 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		workspaceView.selectNode(it_A_path);
 		for (int i = 0; i < t.attributes.length; i++) {
 			Attribute attr = t.attributes[i];
-			attr.owner = t;
-			attr.name = "attr" + t.superCountAttr+i;
 			int l = (attr.sicpKv ? 1 : 0) + (attr.simpKv ? 1 : 0);
 			KeyValue[] kv = new KeyValue[l];
 			int j = 0;
