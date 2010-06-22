@@ -304,13 +304,20 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 				"fr.imag.adele.cadse.core.impl.ui.ic",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.mc",
-				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui");
+				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui",
+				"fr.imag.adele.teamwork.db");
 
 		workspaceView.findTree().doubleClick(c.data_model.concat(finalType.name));
 		GenerateManager manager = new GenerateManager();
 		manager.setCadsePackageName( "model." + c.name);
 		manager.setClassName(finalType.name);
 		manager.setExtendsPart("extends "+finalType.supertype.name+"Manager");
+		//model.CADSE_UI_1_0.managers.Type_1_0Manager
+		if (finalType.cadse != finalType.supertype.cadse) {
+			manager.addImports(finalType.supertype.cadse.packageName+".managers."+finalType.supertype.name+"Manager");
+			GTCadseHelperMethods.addImportOnManifest(c.projectName,
+					"fr.imag.adele.cadse.core.util");
+		}
 		manager.addImports("fr.imag.adele.cadse.core.CadseGCST",
 	"fr.imag.adele.cadse.core.InitAction",
 	"fr.imag.adele.cadse.core.Item",
@@ -332,6 +339,7 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		GenerateHiddenPage ghp = new GenerateHiddenPage();
 		ghp.setCltHiddenAttributes("hiddenPage");
 		ghp.setTypeAttached(finalType.getCst());
+		ghp.addImports(finalType.cadse.getQCst());
 		
 		for (int j = 0; j < types.length; j++) {
 			Type t = types[j];
