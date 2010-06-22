@@ -11,13 +11,7 @@ import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createI
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.AbstractCollection;
 import java.util.AbstractList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -34,6 +28,9 @@ import org.junit.runners.Parameterized.Parameters;
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.core.ItemType;
+import fr.imag.adele.cadse.test.generatorManager.GenerateFieldPart;
+import fr.imag.adele.cadse.test.generatorManager.GenerateHiddenPage;
+import fr.imag.adele.cadse.test.generatorManager.GenerateInnerClass;
 import fr.imag.adele.cadse.test.generatorManager.GenerateManager;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
 import fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods;
@@ -71,12 +68,17 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			this.simpKv = simpKv;
 		}
 
+		Type owner;
 		String name;
 		ItemType typeAttr;
 		boolean hidden;
 		boolean override;
 		boolean sicpKv;
 		boolean simpKv;
+		
+		public String getCst() {
+			return owner.getCst()+"_at_"+name.toUpperCase()+"_";
+		}
 	}
 
 	static public class Type {
@@ -94,10 +96,15 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			this.field = field;
 			this.extendsType = extendsType;
 		}
+
+		public String getCst() {
+			return cadse.getCst()+"."+name.toUpperCase();
+		}
 	}
 
 	static public class Cadse {
 		String name;
+		String packageName;
 		int extendsCadse;
 		Cadse refCadse;
 		Type[] typesRef;
@@ -109,6 +116,13 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			this.i = i;
 			this.extendsCadse = extendsCadse;
 			this.types = types;
+		}
+
+		public String getQCst() {
+			return packageName+"."+getCst();
+		}
+		public String getCst() {
+			return name+"CST";
 		}
 
 		GTTreePath cadse_model;
@@ -244,10 +258,11 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			if (c.extendsCadse != -1)
 				c.refCadse = cadses[c.extendsCadse];
 			
+			c.packageName = "model." + c.name;
 			if (c.refCadse == null)
-				createCadseDefinition(c.name, "model." + c.name);
+				createCadseDefinition(c.name, c.packageName);
 			else
-				createCadseDefinition(c.name, "model." + c.name, 
+				createCadseDefinition(c.name, c.packageName, 
 						new KeyValue(CadseGCST.CADSE_lt_EXTENDS, c.refCadse.name));
 			// TODO extends CAdse
 
@@ -275,7 +290,7 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 					+ t.supertype.attributes.length;
 			createType(t);
 		}
-		 test_item_manager();
+		test_item_manager();
 	}
 
 	public void test_item_manager() throws Exception {
@@ -307,13 +322,44 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 	"fr.imag.adele.cadse.core.ui.RuningInteractionController",
 	"fr.imag.adele.cadse.core.ui.UIField",
 	"fr.imag.adele.cadse.core.util.CreatedObjectManager",
-	"model.CADSE_UI.CADSE_UICST",
 	"fr.imag.adele.cadse.core.impl.ui.PageImpl",
 	"fr.imag.adele.cadse.core.impl.ui.UIFieldImpl",
 	"fr.imag.adele.cadse.core.impl.ui.ic.IC_Descriptor",
 	"fr.imag.adele.cadse.core.impl.ui.mc.MC_Descriptor",
 	"fr.imag.adele.cadse.si.workspace.uiplatform.swt.SWTUIPlatform",
 	"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui.DTextUI");
+		
+		
+		GenerateHiddenPage ghp = new GenerateHiddenPage();
+		ghp.setCltHiddenAttributes("hiddenPage");
+		ghp.setTypeAttached(finalType.getCst());
+		
+		for (int j = 0; j < types.length; j++) {
+			Type t = types[j];
+			for (int i = 0; i < t.attributes.length; i++) {
+				Attribute attr = t.attributes[i];
+				if (attr.hidden) {
+					ghp.addHiddenAttribute(attr.getCst());
+					ghp.addImports(attr.owner.cadse.getQCst());
+				}
+				if (attr.override) {
+					String clsName = "MyClass_"+attr.name;
+					
+					GenerateFieldPart gfp = new GenerateFieldPart();
+					gfp.setAttachedType(attr.owner.getCst());
+					gfp.addImports(attr.owner.cadse.getQCst());
+					gfp.setAttr(attr.getCst());
+					gfp.setFieldClass(clsName);
+					manager.addInitPart(gfp);
+					
+					GenerateInnerClass gic = new GenerateInnerClass();
+					gic.setClassName(clsName );
+					manager.addInnerPart(gic);
+				}
+			}
+		}
+		
+		manager.addInitPart(ghp);
 		
 		GTTextEditor editor = new GTTextEditor(finalType.name+"Manager.java");
 		editor.show();
@@ -356,7 +402,8 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		workspaceView.selectNode(it_A_path);
 		for (int i = 0; i < t.attributes.length; i++) {
 			Attribute attr = t.attributes[i];
-			attr.name = "attr" + i;
+			attr.owner = t;
+			attr.name = "attr" + t.superCountAttr+i;
 			int l = (attr.sicpKv ? 1 : 0) + (attr.simpKv ? 1 : 0);
 			KeyValue[] kv = new KeyValue[l];
 			int j = 0;
