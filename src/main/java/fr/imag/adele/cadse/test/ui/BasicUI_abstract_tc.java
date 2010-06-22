@@ -9,12 +9,14 @@ abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
 	protected Type[] types;
 	protected Cadse[] cadses;
 	protected Type finalType;
+	protected GroupUI[] groupUI;
 
-	public BasicUI_abstract_tc(Type[] types, Cadse[] cadses, int refType) {
+	protected BasicUI_abstract_tc(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
 		super();
 		this.cadses = cadses;
 		this.types = types;
-		this.finalType = types[refType];
+		this.groupUI = groupUi;
+		this.finalType = refType;
 		initParam();
 	}
 	
@@ -23,8 +25,6 @@ abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
 			Cadse c = cadses[i];
 			c.name = "CADSE_UI_" +c.i +"_"+ i;
 			c.projectName = "Model.Workspace." + c.name;
-			if (c.extendsCadse != -1)
-				c.refCadse = cadses[c.extendsCadse];
 			
 			c.packageName = "model." + c.name;
 			c.cadse_model = new GTTreePath(c.name);
@@ -35,9 +35,7 @@ abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
 			c.mapping_model = c.cadse_model
 					.concat(CadseDefinitionManager.MAPPING);
 
-			c.typesRef = new Type[c.types.length];
-			for (int j = 0; j < c.types.length; j++) {
-				c.typesRef[j] = types[c.types[j]];
+			for (int j = 0; j < c.typesRef.length; j++) {
 				c.typesRef[j].cadse = c;
 			}
 		}
@@ -45,8 +43,6 @@ abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
 		for (int j = 0; j < types.length; j++) {
 			Type t = types[j];
 			t.name = "Type_" +t.cadse.i+ "_"+ j;
-			if (t.extendsType != -1)
-				t.supertype = types[t.extendsType];
 			t.superCountAttr = t.supertype == null ? 0 : t.supertype.superCountAttr
 					+ t.supertype.attributes.length;
 			for (int i = 0; i < t.attributes.length; i++) {
@@ -55,5 +51,11 @@ abstract public class BasicUI_abstract_tc extends GTCadseTestCase {
 				attr.name = "attr" + t.superCountAttr+i;
 			}
 		}
+		
+		for (int i = 0; i < groupUI.length; i++) {
+			
+		}
+		
+		
 	}
 }

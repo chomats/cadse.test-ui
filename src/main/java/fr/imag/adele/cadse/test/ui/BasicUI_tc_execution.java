@@ -25,8 +25,8 @@ import fr.imag.adele.graphictests.cadse.test.GTCadseTestCase;
 @RunWith(Parameterized.class)
 public class BasicUI_tc_execution extends BasicUI_abstract_tc {
 	
-	public BasicUI_tc_execution(Type[] types, Cadse[] cadses, int refType) {
-		super(types, cadses, refType);
+	public BasicUI_tc_execution(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
+		super(types, cadses, groupUi, refType);
 	}
 
 	@Parameters

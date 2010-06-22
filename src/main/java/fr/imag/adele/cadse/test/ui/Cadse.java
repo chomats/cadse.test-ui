@@ -8,17 +8,15 @@ import fr.imag.adele.graphictests.gttree.GTTreePath;
 public class Cadse {
 	String name;
 	String packageName;
-	int extendsCadse;
 	Cadse refCadse;
 	Type[] typesRef;
-	int[] types;
 	int i;
 
-	public Cadse(int i, int extendsCadse, int... types) {
+	public Cadse(int i, Cadse extendsCadse, Type... types) {
 		super();
 		this.i = i;
-		this.extendsCadse = extendsCadse;
-		this.types = types;
+		this.refCadse = extendsCadse;
+		this.typesRef = types;
 	}
 
 	public String getQCst() {

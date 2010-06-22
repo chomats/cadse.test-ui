@@ -28,4 +28,8 @@ public class Attribute {
 	public String getCst() {
 		return owner.getCst()+"_at_"+name.toUpperCase()+"_";
 	}
+
+	public String getQCst() {
+		return owner.cadse.getCst();
+	}
 }

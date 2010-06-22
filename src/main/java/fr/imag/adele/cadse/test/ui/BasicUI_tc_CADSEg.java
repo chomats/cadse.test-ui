@@ -26,6 +26,7 @@ import org.junit.runners.Parameterized.Parameters;
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.test.generatorManager.GenerateFieldPart;
+import fr.imag.adele.cadse.test.generatorManager.GenerateGroupPart;
 import fr.imag.adele.cadse.test.generatorManager.GenerateHiddenPage;
 import fr.imag.adele.cadse.test.generatorManager.GenerateInnerClass;
 import fr.imag.adele.cadse.test.generatorManager.GenerateManager;
@@ -46,23 +47,18 @@ import fr.imag.adele.graphictests.gtworkbench_part.GTTextEditor;
  * </ul>
  */
 @RunWith(Parameterized.class)
-public class BasicUI_tc_CADSEg extends GTCadseTestCase {
+public class BasicUI_tc_CADSEg extends BasicUI_abstract_tc {
 	
+	public BasicUI_tc_CADSEg(Type[] types, Cadse[] cadses, GroupUI[] groupUi, Type refType) {
+		super(types, cadses, groupUi, refType);
+	}
+
+
+
 	@Parameters
     public static Collection<Object[]> data() {
     	return new TestParameter();
     }
-
-	private Type[] types;
-	private Cadse[] cadses;
-	private Type finalType;
-
-	public BasicUI_tc_CADSEg(Type[] types, Cadse[] cadses, int refType) {
-		super();
-		this.cadses = cadses;
-		this.types = types;
-		this.finalType = types[refType];
-	}
 
 	/**
 	 * Makes a few things before the test starts.
@@ -83,45 +79,6 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		// Closes unless views
 		welcomeView.close();
 		workspaceView.show();
-	}
-	
-	public void initParam() {
-		for (int i = 0; i < cadses.length; i++) {
-			Cadse c = cadses[i];
-			c.name = "CADSE_UI_" +c.i +"_"+ i;
-			c.projectName = "Model.Workspace." + c.name;
-			if (c.extendsCadse != -1)
-				c.refCadse = cadses[c.extendsCadse];
-			
-			c.packageName = "model." + c.name;
-			c.cadse_model = new GTTreePath(c.name);
-			c.build_model = c.cadse_model
-					.concat(CadseDefinitionManager.BUILD_MODEL);
-			c.data_model = c.cadse_model
-					.concat(CadseDefinitionManager.DATA_MODEL);
-			c.mapping_model = c.cadse_model
-					.concat(CadseDefinitionManager.MAPPING);
-
-			c.typesRef = new Type[c.types.length];
-			for (int j = 0; j < c.types.length; j++) {
-				c.typesRef[j] = types[c.types[j]];
-				c.typesRef[j].cadse = c;
-			}
-		}
-
-		for (int j = 0; j < types.length; j++) {
-			Type t = types[j];
-			t.name = "Type_" +t.cadse.i+ "_"+ j;
-			if (t.extendsType != -1)
-				t.supertype = types[t.extendsType];
-			t.superCountAttr = t.supertype == null ? 0 : t.supertype.superCountAttr
-					+ t.supertype.attributes.length;
-			for (int i = 0; i < t.attributes.length; i++) {
-				Attribute attr = t.attributes[i];
-				attr.owner = t;
-				attr.name = "attr" + t.superCountAttr+i;
-			}
-		}
 	}
 	
 	@Test
@@ -214,6 +171,34 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 					manager.addInnerPart(gic);
 				}
 			}
+		}
+		
+		for (int i = 0; i < groupUI.length; i++) {
+			GroupUI g = groupUI[i];
+			if (!g.generateIt()) continue;
+			
+			
+			GenerateGroupPart ggp = new GenerateGroupPart();
+			String[] attributesCst = new String[g.attributes.length];
+			for (int j = 0; j < attributesCst.length; j++) {
+				attributesCst[j] = g.attributes[j].getCst();
+				ggp.addImports(g.attributes[j].getQCst());
+			}
+			
+			ggp.setAttributeCST(attributesCst);
+			ggp.setColumn(Integer.toString(g.column));
+			ggp.setDescription(g.label);
+			ggp.setHasBox(Boolean.toString(g.hasBox));
+			ggp.setLabel(g.label);
+			if (g.overrideG != null) {
+				ggp.setOverrideGroup(g.overrideG.getCST());
+				if (g.overrideG.getQCst() != null)
+					ggp.addImports(g.overrideG.getQCst());
+			}
+			ggp.setAttachedType(g.attachedType.getCst());
+			ggp.addImports(g.attachedType.getQCst());
+			
+			manager.addInitPart(ggp);
 		}
 		
 		manager.addInitPart(ghp);
