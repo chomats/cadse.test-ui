@@ -9,7 +9,7 @@ import java.util.Iterator;
 import fr.imag.adele.cadse.core.CadseGCST;
 
 public class TestParameter extends AbstractList<Object[]> {
-	int l = 3;
+	int l = 5;
 	
 	@Override
 	public Iterator<Object[]> iterator() {
@@ -120,7 +120,9 @@ public class TestParameter extends AbstractList<Object[]> {
 				),
 				g (
 					g0 = new GroupNameUI(),
-					new GroupUI(g0, t0, "name2", 1,  true, a0)
+					new GroupUI(g0, t0, "name2", 1,  true, 
+							a0, new AttributeRef("CadseGCST.ITEM_at_NAME_", 
+									"fr.imag.adele.cadse.core.CadseGCST"))
 				),
 				t1
 			);

@@ -112,7 +112,8 @@ public class BasicUI_tc_CADSEg extends BasicUI_abstract_tc {
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.mc",
 				"fr.imag.adele.cadse.si.workspace.uiplatform.swt.ui",
-				"fr.imag.adele.teamwork.db");
+				"fr.imag.adele.teamwork.db",
+				"fr.imag.adele.cadse.cadseg.pages");
 
 		workspaceView.findTree().doubleClick(c.data_model.concat(finalType.name));
 		GenerateManager manager = new GenerateManager();

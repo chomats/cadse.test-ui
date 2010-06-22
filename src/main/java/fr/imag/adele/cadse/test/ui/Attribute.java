@@ -30,6 +30,6 @@ public class Attribute {
 	}
 
 	public String getQCst() {
-		return owner.cadse.getCst();
+		return owner.cadse.getQCst();
 	}
 }
