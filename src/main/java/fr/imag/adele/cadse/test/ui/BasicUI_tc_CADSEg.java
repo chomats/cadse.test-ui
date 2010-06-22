@@ -264,7 +264,6 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 			else
 				createCadseDefinition(c.name, c.packageName, 
 						new KeyValue(CadseGCST.CADSE_lt_EXTENDS, c.refCadse.name));
-			// TODO extends CAdse
 
 			c.cadse_model = new GTTreePath(c.name);
 			c.build_model = c.cadse_model
@@ -283,7 +282,7 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 
 		for (int j = 0; j < types.length; j++) {
 			Type t = types[j];
-			t.name = "Type_" + j;
+			t.name = "Type_" +t.cadse.i+ "_"+ j;
 			if (t.extendsType != -1)
 				t.supertype = types[t.extendsType];
 			t.superCountAttr = t.supertype == null ? 0 : t.supertype.superCountAttr
