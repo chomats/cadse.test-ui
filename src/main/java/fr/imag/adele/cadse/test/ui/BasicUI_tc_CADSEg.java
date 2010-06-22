@@ -361,12 +361,13 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		
 		manager.addInitPart(ghp);
 		
+		System.out.println("Open manager of " + finalType.getCst());
 		GTTextEditor editor = new GTTextEditor(finalType.name+"Manager.java");
 		editor.show();
 		editor.selectAll();
 		editor.typeText(manager.classPart());
 		editor.save();
-		edirot.close();
+		editor.close();
 		
 		checkError();
 		
