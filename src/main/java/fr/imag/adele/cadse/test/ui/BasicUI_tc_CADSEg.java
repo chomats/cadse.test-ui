@@ -366,7 +366,7 @@ public class BasicUI_tc_CADSEg extends GTCadseTestCase {
 		editor.selectAll();
 		editor.typeText(manager.classPart());
 		editor.save();
-		
+		edirot.close();
 		
 		checkError();
 		
