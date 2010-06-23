@@ -1,5 +1,6 @@
 package fr.imag.adele.cadse.test.ui;
 
+import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.propertiesView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseView.workspaceView;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.notAbstractKv;
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.rootKv;
@@ -7,7 +8,7 @@ import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.si
 import static fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue.simpKv;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createBasicAttribute;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createCadseDefinition;
-import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.createItemType;
+import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.*;
 import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectCadses;
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
@@ -32,6 +33,7 @@ import fr.imag.adele.cadse.test.generatorManager.GenerateInnerClass;
 import fr.imag.adele.cadse.test.generatorManager.GenerateManager;
 import fr.imag.adele.cadse.test.ui.model.Attribute;
 import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.ExtendedType;
 import fr.imag.adele.cadse.test.ui.model.GroupUI;
 import fr.imag.adele.cadse.test.ui.model.Type;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
@@ -234,20 +236,35 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 	}
 
 	private void createType(Type t) {
-		final GTTreePath it_A_path = t.cadse.data_model.concat(t.name);
-
+		
 		KeyValue superItA = null;
 		if (t.supertype != null)
 			superItA = new KeyValue(CadseGCST.ITEM_TYPE_lt_SUPER_TYPE,
 					t.supertype.cadse.data_model.concat(t.supertype.name));
 
-		// Creates item type with default instance name
-		if (superItA == null)
-			createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv);
-		else
-			createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv,
-					superItA);
+		if (t instanceof ExtendedType) {
+			createExtendedType(t.cadse.data_model, t.name);
+		} else {
+			// Creates item type with def ault instance name
+			if (superItA == null)
+				createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv);
+			else
+				createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv,
+						superItA);
+		}
+		
+		final GTTreePath it_A_path = t.cadse.data_model.concat(t.name);
+
 		workspaceView.selectNode(it_A_path);
+		if (t instanceof ExtendedType) {
+			ExtendedType et = (ExtendedType) t;
+			propertiesView.showTab(t.name);
+			for (int i = 0; i < et.typesExtended.length; i++) {
+				Type bindingType = et.typesExtended[i];
+				GTTreePath bindingType_path = bindingType.cadse.data_model.concat(bindingType.name);
+				propertiesView.setValue(new KeyValue(CadseGCST.EXT_ITEM_TYPE_lt_REF_TYPE, bindingType_path));
+			}
+		}
 		for (int i = 0; i < t.attributes.length; i++) {
 			Attribute attr = t.attributes[i];
 			int l = (attr.sicpKv ? 1 : 0) + (attr.simpKv ? 1 : 0);
