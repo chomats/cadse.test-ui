@@ -3,7 +3,9 @@ package fr.imag.adele.cadse.test.ui;
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
 import fr.imag.adele.cadse.test.ui.model.Attribute;
 import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.ExtendedType;
 import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Page;
 import fr.imag.adele.cadse.test.ui.model.Type;
 import fr.imag.adele.graphictests.cadse.test.GTCadseTestCase;
 import fr.imag.adele.graphictests.gttree.GTTreePath;
@@ -53,6 +55,24 @@ abstract public class HiddenPageUI_abstract_tc extends GTCadseTestCase {
 				Attribute attr = t.attributes[i];
 				attr.owner = t;
 				attr.name = "attr" + t.superCountAttr+i;
+			}
+			if (t instanceof ExtendedType) {
+				ExtendedType et = (ExtendedType) t;
+				for (Type t_by_et : et.typesExtended) {
+					t_by_et.addExtendedType(et);
+				}
+			}
+			Page[] pages = t.pages;
+			for (Page p : pages) {
+				for (Attribute a : p.attributes) {
+					a.addInPage(p);
+				}
+				for (Attribute a : p.hidden) {
+					a.addHiddenInPage(p);
+				}
+				for (Attribute a : p.attributes) {
+					a.addReadOnlyInPage(p);
+				}
 			}
 		}
 		

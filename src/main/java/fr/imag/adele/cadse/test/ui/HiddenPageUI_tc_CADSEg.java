@@ -13,7 +13,9 @@ import static fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods.selectC
 import static fr.imag.adele.graphictests.gtworkbench_part.GTView.welcomeView;
 
 import java.util.Collection;
+import java.util.Iterator;
 
+import org.codehaus.groovy.runtime.ArrayUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IJavaProject;
@@ -35,7 +37,9 @@ import fr.imag.adele.cadse.test.ui.model.Attribute;
 import fr.imag.adele.cadse.test.ui.model.Cadse;
 import fr.imag.adele.cadse.test.ui.model.ExtendedType;
 import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Page;
 import fr.imag.adele.cadse.test.ui.model.Type;
+import fr.imag.adele.cadse.util.ArraysUtil;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
 import fr.imag.adele.graphictests.cadse.test.GTCadseHelperMethods;
 import fr.imag.adele.graphictests.cadse.test.GTCadseRTConstants;
@@ -178,6 +182,11 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 					manager.addInnerPart(gic);
 				}
 			}
+			for (int i = 0; i < t.pages.length; i++) {
+				manager.addInitPart(
+						configure(
+								new GeneratePage(), t, t.pages[i]));
+			}
 		}
 		
 		for (int i = 0; i < groupUI.length; i++) {
@@ -221,6 +230,31 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 		checkError();
 		
 
+	}
+
+
+
+	private GeneratePage configure(GeneratePage ghp_i, Type t, Page p) {
+		ghp_i.setPageVar("page");
+		ghp_i.setTypeAttached(t.getCst());
+		ghp_i.addImports(t.cadse.getQCst());
+		ghp_i.setLabel(p.name);
+		
+		for (Attribute a : p.attributes) {
+			ghp_i.addAttribute(a.getCst());
+			ghp_i.addImports(a.owner.cadse.getQCst());
+		}
+		
+		for (Attribute a : p.hidden) {
+			ghp_i.addHiddenAttribute(a.getCst());
+			ghp_i.addImports(a.owner.cadse.getQCst());
+		}
+		
+		for (Attribute a : p.readonly) {
+			ghp_i.addReadOnlyAttributes(a.getCst());
+			ghp_i.addImports(a.owner.cadse.getQCst());
+		}
+		return ghp_i;
 	}
 
 	private void checkError() throws Exception {
@@ -267,13 +301,12 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 		}
 		for (int i = 0; i < t.attributes.length; i++) {
 			Attribute attr = t.attributes[i];
-			int l = (attr.sicpKv ? 1 : 0) + (attr.simpKv ? 1 : 0);
-			KeyValue[] kv = new KeyValue[l];
-			int j = 0;
+			KeyValue[] kv = attr.keyValues.clone();
+			
 			if (attr.sicpKv)
-				kv[j++] = sicpKv;
+				kv = ArraysUtil.add(KeyValue.class, kv, sicpKv);
 			if (attr.simpKv)
-				kv[j++] = simpKv;
+				kv = ArraysUtil.add(KeyValue.class, kv, simpKv);
 
 			createBasicAttribute(it_A_path, attr.typeAttr, attr.name, kv);
 		}

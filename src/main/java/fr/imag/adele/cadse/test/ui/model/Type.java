@@ -14,12 +14,15 @@ public class Type {
 	public Type supertype = null;
 	public int superCountAttr = 0;
 	public boolean isAbstract = false;
+	public Page[] pages;
+	public ExtendedType[] extendedTypes = null;
 	
-	public Type(Type supertype, Attribute[] attributes, Field[] field) {
+	public Type(Type supertype, Attribute[] attributes, Field[] field, Page[] pages) {
 		super();
 		this.attributes = attributes == null ? new Attribute[0] : attributes;
 		this.field = field == null ? new Field[0] : field;
 		this.supertype = supertype;
+		this.pages = pages;
 	}
 
 	public String getCst() {
@@ -35,5 +38,9 @@ public class Type {
 
 	public String getQCst() {
 		return cadse.getQCst();
+	}
+	
+	public void addExtendedType(ExtendedType et) {
+		extendedTypes = ArraysUtil.add(ExtendedType.class, extendedTypes, et);
 	}
 }

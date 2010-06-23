@@ -10,9 +10,11 @@ import fr.imag.adele.cadse.core.CadseGCST;
 import fr.imag.adele.cadse.test.ui.model.Attribute;
 import fr.imag.adele.cadse.test.ui.model.AttributeRef;
 import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.ExtendedType;
 import fr.imag.adele.cadse.test.ui.model.Field;
 import fr.imag.adele.cadse.test.ui.model.GroupNameUI;
 import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Page;
 import fr.imag.adele.cadse.test.ui.model.Type;
 
 public class TestParameter extends AbstractList<Object[]> {
@@ -58,15 +60,21 @@ public class TestParameter extends AbstractList<Object[]> {
 		Type t0;
 		Type t1;
 		Type t2;
+		Type t3;
+		Type t4;
 		GroupNameUI g0;
 		Attribute a0;
+		Attribute a1;
+		Attribute a2;
+		Attribute a3;
+		
 		
 		switch (index) {
 	case 0:
 		return e( 	t(
 				t0 = new Type(null, a( 
-						new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
-				t1 = new Type(t0, a(), f())
+						new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+				t1 = new Type(t0, a(), f(), p())
 			),
 			c( 
 				new Cadse(index, null, t0, t1)
@@ -77,8 +85,8 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 1:
 			return e(  t(
 				t0 = new Type(null, a( 
-						new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), null),
-				t1 = new Type(t0, a(), null)),
+						new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+				t1 = new Type(t0, a(), f(), p())),
 			c( 
 				c0 = new Cadse(index,null, t0), 
 				new Cadse(index, c0, t1)
@@ -90,8 +98,8 @@ public class TestParameter extends AbstractList<Object[]> {
     			 	t(
     					t0 = new Type(null, a( 
     							new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP),
-								new Attribute(CadseGCST.STRING, !HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-						t1 = new Type(t0, a(), f())
+								new Attribute(CadseGCST.STRING, !HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+						t1 = new Type(t0, a(), f(), p())
 						),
     				c( 
     					c0 = new Cadse(index, null, t0), 
@@ -108,8 +116,8 @@ public class TestParameter extends AbstractList<Object[]> {
     							new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP),
     							new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP),
     							new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP),
-								new Attribute(CadseGCST.STRING, !HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-						t1 = new Type(t0, a(), f())
+								new Attribute(CadseGCST.STRING, !HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+						t1 = new Type(t0, a(), f(), p())
 						),
     				c( 
     					c0 = new Cadse(index, null, t0), 
@@ -122,8 +130,8 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 4:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
-					t1= new Type(t0, a(), f())),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t1= new Type(t0, a(), f(), p())),
 				c( 
 					new Cadse(index, null, t0, t1)
 				),
@@ -136,13 +144,12 @@ public class TestParameter extends AbstractList<Object[]> {
 				t1
 			);
 		case 5:
-			Attribute a1;
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
@@ -158,10 +165,10 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 6:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
@@ -177,10 +184,10 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 7:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
@@ -196,10 +203,10 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 8:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
@@ -210,10 +217,10 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 9:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
@@ -224,13 +231,47 @@ public class TestParameter extends AbstractList<Object[]> {
 		case 10:
 			return e( 	t(
 					t0= new Type(null, a( 
-							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
 					t1= new Type(t0, a( 
-							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f()),
-					t2= new Type(t1, a(), f())),
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p())),
 				c( 
 					c0 = new Cadse(index, null, t0, t1),
 					new Cadse(index, c0, t2)
+				),
+				g (),
+				t2
+			);
+		case 11:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t2= new Type(t1, a(), f(), p()),
+					t4= new ExtendedType(a( 
+							a3 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP)), f(), p(), t(t0))),
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2, t4)
+				),
+				g (),
+				t2
+			);
+		case 12:
+			return e( 	t(
+					t0= new Type(null, a( 
+							a0 = new Attribute(CadseGCST.STRING, HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t1= new Type(t0, a( 
+							a1 = new Attribute(CadseGCST.STRING, !HIDDEN, OVERRIDE, SICP, SIMP) ), f(), p()),
+					t4= new ExtendedType(a( 
+							a3 = new Attribute(CadseGCST.STRING, HIDDEN, !OVERRIDE, SICP, SIMP)), f(), p(), t(t0)),
+					t2= new Type(t1, a(), f(), p(
+							new Page("p1",p(), a(a3), a(),a())))),
+							
+				c( 
+					c0 = new Cadse(index, null, t0, t1),
+					new Cadse(index, c0, t2, t4)
 				),
 				g (),
 				t2
@@ -255,6 +296,10 @@ public class TestParameter extends AbstractList<Object[]> {
 	
 	Type[] t(Type ...t) {
 		return t;
+	}
+	
+	Page[] p(Page ...p) {
+		return p;
 	}
 	
 	GroupUI[] g(GroupUI ...g) {
