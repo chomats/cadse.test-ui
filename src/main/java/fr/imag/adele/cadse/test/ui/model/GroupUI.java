@@ -1,13 +1,13 @@
-package fr.imag.adele.cadse.test.ui;
+package fr.imag.adele.cadse.test.ui.model;
 
 public class GroupUI {
 	String cst;
-	String label;
-	boolean hasBox;
-	Attribute[] attributes;
-	GroupUI     overrideG;
-	Type attachedType;
-	int column;
+	public String label;
+	public boolean hasBox;
+	public Attribute[] attributes;
+	public GroupUI     overrideG;
+	public Type attachedType;
+	public int column;
 	
 	/**
 	 * @param label the label or null
@@ -27,15 +27,15 @@ public class GroupUI {
 		
 	}
 	
-	boolean generateIt() {
+	public boolean generateIt() {
 		return true;
 	}
 	
-	String getCST() {
+	public String getCST() {
 		return cst;
 	}
 	
-	String getQCst() {
+	public String getQCst() {
 		return null;
 	}
 }

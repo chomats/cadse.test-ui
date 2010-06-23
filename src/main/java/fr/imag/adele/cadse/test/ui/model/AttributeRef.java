@@ -1,4 +1,4 @@
-package fr.imag.adele.cadse.test.ui;
+package fr.imag.adele.cadse.test.ui.model;
 
 
 public class AttributeRef  extends Attribute {

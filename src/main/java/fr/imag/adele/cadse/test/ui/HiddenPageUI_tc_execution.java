@@ -15,6 +15,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import fr.imag.adele.cadse.core.CadseGCST;
+import fr.imag.adele.cadse.test.ui.model.Attribute;
+import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Type;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.GTCadseShell;
 import fr.imag.adele.graphictests.cadse.gtcadseworkbench_part.KeyValue;
 import fr.imag.adele.graphictests.cadse.test.GTCadseRTConstants;

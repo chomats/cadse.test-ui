@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.imag.adele.cadse.test.ui;
+package fr.imag.adele.cadse.test.ui.model;
 
 import fr.imag.adele.cadse.core.ItemType;
 
@@ -17,13 +17,13 @@ public class Attribute {
 		this.simpKv = simpKv;
 	}
 
-	Type owner;
-	String name;
-	ItemType typeAttr;
-	boolean hidden;
-	boolean override;
-	boolean sicpKv;
-	boolean simpKv;
+	public Type owner;
+	public String name;
+	public ItemType typeAttr;
+	public boolean hidden;
+	public boolean override;
+	public boolean sicpKv;
+	public boolean simpKv;
 	
 	public String getCst() {
 		return owner.getCst()+"_at_"+name.toUpperCase()+"_";

@@ -1,19 +1,19 @@
 /**
  * 
  */
-package fr.imag.adele.cadse.test.ui;
+package fr.imag.adele.cadse.test.ui.model;
 
 import fr.imag.adele.cadse.util.ArraysUtil;
 
 
 public class Type {
-	Cadse cadse;
-	String name;
-	Attribute[] attributes;
-	Field[] field;
-	Type supertype = null;
-	int superCountAttr = 0;
-	boolean isAbstract = false;
+	public Cadse cadse;
+	public String name;
+	public Attribute[] attributes;
+	public Field[] field;
+	public Type supertype = null;
+	public int superCountAttr = 0;
+	public boolean isAbstract = false;
 	
 	public Type(Type supertype, Attribute[] attributes, Field[] field) {
 		super();

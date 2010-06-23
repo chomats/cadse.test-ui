@@ -1,6 +1,10 @@
 package fr.imag.adele.cadse.test.ui;
 
 import fr.imag.adele.cadse.cadseg.managers.CadseDefinitionManager;
+import fr.imag.adele.cadse.test.ui.model.Attribute;
+import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Type;
 import fr.imag.adele.graphictests.cadse.test.GTCadseTestCase;
 import fr.imag.adele.graphictests.gttree.GTTreePath;
 

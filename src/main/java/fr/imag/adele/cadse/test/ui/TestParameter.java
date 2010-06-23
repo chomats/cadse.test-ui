@@ -7,6 +7,13 @@ import java.util.AbstractList;
 import java.util.Iterator;
 
 import fr.imag.adele.cadse.core.CadseGCST;
+import fr.imag.adele.cadse.test.ui.model.Attribute;
+import fr.imag.adele.cadse.test.ui.model.AttributeRef;
+import fr.imag.adele.cadse.test.ui.model.Cadse;
+import fr.imag.adele.cadse.test.ui.model.Field;
+import fr.imag.adele.cadse.test.ui.model.GroupNameUI;
+import fr.imag.adele.cadse.test.ui.model.GroupUI;
+import fr.imag.adele.cadse.test.ui.model.Type;
 
 public class TestParameter extends AbstractList<Object[]> {
 	int l = 11;

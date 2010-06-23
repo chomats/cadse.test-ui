@@ -1,17 +1,22 @@
 /**
  * 
  */
-package fr.imag.adele.cadse.test.ui;
+package fr.imag.adele.cadse.test.ui.model;
 
 import fr.imag.adele.graphictests.gttree.GTTreePath;
 
 public class Cadse {
-	String name;
-	String packageName;
-	Cadse refCadse;
-	Type[] typesRef;
-	int i;
-
+	public String name;
+	public String packageName;
+	public Cadse refCadse;
+	public Type[] typesRef;
+	public int i;
+	public GTTreePath cadse_model;
+	public GTTreePath build_model;
+	public GTTreePath data_model;
+	public GTTreePath mapping_model;
+	public String projectName;
+	
 	public Cadse(int i, Cadse extendsCadse, Type... types) {
 		super();
 		this.i = i;
@@ -26,9 +31,5 @@ public class Cadse {
 		return name+"CST";
 	}
 
-	GTTreePath cadse_model;
-	GTTreePath build_model;
-	GTTreePath data_model;
-	GTTreePath mapping_model;
-	public String projectName;
+	
 }
