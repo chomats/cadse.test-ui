@@ -281,9 +281,9 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 		} else {
 			// Creates item type with def ault instance name
 			if (superItA == null)
-				createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv);
+				createItemType(t.cadse.data_model, t.name, notAbstractKv(), rootKv());
 			else
-				createItemType(t.cadse.data_model, t.name, notAbstractKv, rootKv,
+				createItemType(t.cadse.data_model, t.name, notAbstractKv(), rootKv(),
 						superItA);
 		}
 		
@@ -304,9 +304,9 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 			KeyValue[] kv = attr.keyValues.clone();
 			
 			if (attr.sicpKv)
-				kv = ArraysUtil.add(KeyValue.class, kv, sicpKv);
+				kv = ArraysUtil.add(KeyValue.class, kv, sicpKv());
 			if (attr.simpKv)
-				kv = ArraysUtil.add(KeyValue.class, kv, simpKv);
+				kv = ArraysUtil.add(KeyValue.class, kv, simpKv());
 
 			createBasicAttribute(it_A_path, attr.typeAttr, attr.name, kv);
 		}
