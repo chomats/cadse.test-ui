@@ -228,8 +228,6 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 		editor.close();
 		
 		checkError();
-		
-
 	}
 
 
