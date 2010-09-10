@@ -287,7 +287,7 @@ public class HiddenPageUI_tc_CADSEg extends HiddenPageUI_abstract_tc {
 		}
 	}
 
-	private void createType(Type t) {
+	private void createType(Type t) throws Exception {
 		
 		KeyValue superItA = null;
 		if (t.supertype != null)
